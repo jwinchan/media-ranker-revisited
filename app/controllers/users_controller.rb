@@ -11,8 +11,8 @@ class UsersController < ApplicationController
   def create
     auth_hash = request.env["omniauth.auth"]
 
-    user = User.find_by[uid: auth_hash[:uid],
-                        provider: params[:provider]]
+    user = User.find_by(uid: auth_hash[:uid],
+                        provider: params[:provider])
 
     if user
       flash[:success] = "Existing user #{user.username} is logged in."
@@ -24,10 +24,10 @@ class UsersController < ApplicationController
         flash[:error] = "Could not create new user account: #{user.errors.messages}"
         return redirect_to root_path
       end
-
-      session[:user_id] = user.id
-      return redirect_to root_path
     end
+
+    session[:user_id] = user.id
+    return redirect_to root_path
   end
 
   def logout
