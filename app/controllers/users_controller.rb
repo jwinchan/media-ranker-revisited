@@ -8,6 +8,18 @@ class UsersController < ApplicationController
     render_404 unless @user
   end
 
+  def create
+    auth_hash = request.env["omniauth.auth"]
+
+    user = User.find_by[uid: auth_hash[:uid],
+                        provider: params[:provider]]
+
+    if user
+      flash[:success] = "Existing user #{user.username} is logged in."
+    end
+
+  end
+
   def login_form
   end
 
